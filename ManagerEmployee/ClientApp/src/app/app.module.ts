@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { ManagerService } from './manager.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { LoginComponent } from './login/login.component';
       //{ path: 'fetch-data', component: FetchDataComponent },
     ])
   ],
-  providers: [],
+  providers: [ManagerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

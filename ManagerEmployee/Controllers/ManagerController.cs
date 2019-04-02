@@ -34,11 +34,11 @@ namespace ManagerEmployee.Controllers
         public ManagerController()
         {
             ManagerEmployeeContext managercontext = new ManagerEmployeeContext();
-            //Employees = managercontext.Employee.ToList();
-            //Departments = managercontext.Department.ToList();
+            Employees = managercontext.Employee.ToList();
+            Departments = managercontext.Department.ToList();
             //Positions = managercontext.Position.ToList();
             //EmpDeps = managercontext.EmpDep.ToList();
-            UserLogins = managercontext.UserLogin.ToList();
+            //UserLogins = managercontext.UserLogin.ToList();
         }
 
         /// <summary>
@@ -87,38 +87,43 @@ namespace ManagerEmployee.Controllers
         {
             return await Task.FromResult(Positions);
         }
-
-
-        // GET: api/<controller>
+        /// <summary>
+        /// api/Manager/FindPosition
+        /// Find position
+        /// </summary>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("FindPosition/{username}")]
+        public async Task<Position> FindPosition(string username)
         {
-            return new string[] { "value1", "value2" };
+            var user = UserLogins.Where(p => p.UserName == username).FirstOrDefault();
+            var employee = Employees.Where(p => p.IdEmployee == user.IdEmployeee).FirstOrDefault();
+            var position = Positions.Where(p => p.IdPosition == employee.IdPosition).FirstOrDefault();
+            return position;
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        /// <summary>
+        /// api/Manager/CheckUser/?username
+        /// Check username va password
+        /// </summary>
+
+        [HttpGet]
+        [Route("CheckUser")]
+        public async Task<bool> CheckUser(string username,string password)
         {
-            return "value";
+            var user = UserLogins.Where(p => p.UserName == username).FirstOrDefault();
+            if(user.PassWord== password)
+            {
+                var employee = Employees.Where(p => p.IdEmployee == user.IdEmployeee).FirstOrDefault();
+                var position = Positions.Where(p => p.IdPosition == employee.IdPosition).FirstOrDefault();
+                if(position.IdPosition== "Pos1" | position.IdPosition == "Pos2" )
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
 
-        // POST api/<controller>
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

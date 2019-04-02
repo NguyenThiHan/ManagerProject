@@ -13,14 +13,20 @@ export class LoginComponent implements OnInit {
 
   public username: string;
   public password: string;
-
+  public dbUser: UserLogin[] = [];
 
   constructor(private managerService: ManagerService)
   { }
 
   ngOnInit()
   {
-
+    this.getDataUserLogin();
+  }
+  getDataUserLogin() {
+    this.managerService.getUserLogin().subscribe(dbUser => this.dbUser = dbUser);
   }
 
+  CheckLogin() {
+    
+  }
 }
